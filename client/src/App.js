@@ -17,7 +17,7 @@ export default function App() {
 
   return (
     <GoogleOAuthProvider clientId="440715594921-qjdr7veoc2sitpmgr9agla6kmsdsv4h9.apps.googleusercontent.com">
-      <BrowserRouter basename="https://mernmemoryproject.vercel.app/">
+      <BrowserRouter basename="/">
         <Flasher position="top_center">
           <Message />
         </Flasher>
