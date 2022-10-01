@@ -2,10 +2,6 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import path from "path";
-// const express = require("express");
-// const mongoose = require("mongoose");
-// const cors = require("cors");
-//const postRoutes = require("./routes/posts");
 import postRoutes from "./routes/posts.js";
 import userRoutes from "./routes/user.js";
 import 'dotenv/config';
@@ -31,10 +27,21 @@ app.use('/user', userRoutes);
 // router.get("/", getPosts);
 // router.post("/", createPosts);
 
+// all your routes should go here
+// app.use('/posts', require(path.join(__dirname, postRoutes)));
+// app.use('/user', require(path.join(__dirname, userRoutes)));
 
 app.get("/", (req, res) => {
     res.send("APP IS RUNNING");//give user feedback to show on their browser
 })
+
+// static files (build of your frontend)
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../frontend/build')));
+    app.get('/*', (req, res) => {
+      res.sendFile(path.join(__dirname, '../client/build/index.html'));
+    })
+  }
 
 
 app.listen(PORT, ()=>{
