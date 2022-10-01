@@ -21,27 +21,24 @@ mongoose.connect(process.env.CONNECTION_URL, {useNewUrlParser: true, useUnifiedT
     .catch(e=>console.log("Error connecting Mongo!", e));
 
 
-//ROUTES **Has to come after all the middleware or middlewares won't mount!
-app.use('/posts', postRoutes);
-app.use('/user', userRoutes);
-// router.get("/", getPosts);
-// router.post("/", createPosts);
-
-// all your routes should go here
-// app.use('/posts', require(path.join(__dirname, postRoutes)));
-// app.use('/user', require(path.join(__dirname, userRoutes)));
-
-app.get("/", (req, res) => {
-    res.send("APP IS RUNNING");//give user feedback to show on their browser
-})
 
 // static files (build of your frontend)
 if (process.env.NODE_ENV === 'production') {
+    app.use('/posts', require(path.join(__dirname, 'api', 'routes', 'post.js')));
+    app.use('/user', require(path.join(__dirname, 'api', 'routes', 'user.js')));
+
     app.use(express.static(path.join(__dirname, '../frontend/build')));
     app.get('/*', (req, res) => {
       res.sendFile(path.join(__dirname, '../client/build/index.html'));
     })
   }
+else{
+    //If Running on Local host
+    //ROUTES **Has to come after all the middleware or middlewares won't mount!
+    app.use('/posts', postRoutes);
+    app.use('/user', userRoutes);
+
+}
 
 
 app.listen(PORT, ()=>{
